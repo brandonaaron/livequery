@@ -1,10 +1,10 @@
-== Live Query ChangeLog ==
+# Live Query ChangeLog
 
-== 1.0.2 ==
+## 1.0.2
 
 * Updated to work with jQuery 1.2.2
 
-== 1.0.1 ==
+## 1.0.1
 
 * Added removeAttr, toggleClass, emtpy and remove to the list of registered core DOM manipulation methods
 * Removed setInterval in favor of on-demand setTimeout
