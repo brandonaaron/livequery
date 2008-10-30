@@ -31,8 +31,8 @@ $.extend($.fn, {
 		// Make sure it is running
 		q.stopped = false;
 		
-		// Run it
-		$.livequery.run( q.id );
+		// Run it immediately for the first time
+		q.run();
 		
 		// Contnue the chain
 		return this;
