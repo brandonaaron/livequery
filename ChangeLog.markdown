@@ -1,5 +1,9 @@
 # Live Query ChangeLog
 
+## 1.0.3
+
+* LiveQueries are run as soon as they are created to avoid potential flash of content issues
+
 ## 1.0.2
 
 * Updated to work with jQuery 1.2.2
