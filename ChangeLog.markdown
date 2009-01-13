@@ -1,5 +1,9 @@
 # Live Query ChangeLog
 
+## 1.1
+
+* Updated to better integrate with jQuery 1.3 (no longer supports jQuery < 1.3)
+
 ## 1.0.3
 
 * LiveQueries are run as soon as they are created to avoid potential flash of content issues
