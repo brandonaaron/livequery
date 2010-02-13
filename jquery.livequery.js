@@ -1,8 +1,8 @@
-/*! Copyright (c) 2009 Brandon Aaron (http://brandonaaron.net)
- * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
- * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
+/*! Copyright (c) 2010 Brandon Aaron (http://brandonaaron.net)
+ * Dual licensed under the MIT (MIT_LICENSE.txt)
+ * and GPL Version 2 (GPL_LICENSE.txt) licenses.
  *
- * Version: 1.1.0-pre
+ * Version: 1.1.1
  * Requires jQuery 1.3+
  * Docs: http://docs.jquery.com/Plugins/livequery
  */

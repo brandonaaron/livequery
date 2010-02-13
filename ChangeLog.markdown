@@ -1,5 +1,10 @@
 # Live Query ChangeLog
 
+## 1.1.1
+
+* Compatibility fix with 1.4.1 (thanks)
+* Updated README
+
 ## 1.1
 
 * Updated to better integrate with jQuery 1.3 (no longer supports jQuery < 1.3)
