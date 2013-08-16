@@ -15,6 +15,7 @@
 		<script type="text/javascript" src="jquery.js"></script>
 		<script src="../jquery.livequery.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" charset="utf-8">
+			$.livequery.htcPath = '../jquery.livequery.htc';
 			$(function() {
 				var anim = (function() {
 					var el = $('#anim');
@@ -23,38 +24,6 @@
 					};
 				})();
 				anim();
-				
-				/*** Example 1-1 ***/
-				var example1_1 = function() {
-					$(this)
-						.text('Clicked')
-						.blur();
-					return false;
-				};
-				$('input[name=example1-1-add]')
-					.bind('click', function() {
-						$('ul#example1-1')
-							.append('<li><a href="#listitem">List Item</a></li>');
-						this.blur();
-					});
-				$('input[name=example1-1-expire]')
-					.bind('click', function() {
-						$('body #example1-1 a')
-							.expire('click');
-						this.blur();
-						this.disabled = true;
-						$('input[name=example1-1-restart]').attr('disabled', false);
-					});
-				$('input[name=example1-1-restart]')
-					.bind('click', function() {
-						$('body #example1-1 a')
-							.livequery('click', example1_1);
-						$('input[name=example1-1-expire]')[0].disabled = false;
-						$('input[name=example1-1-restart]').attr('disabled', true).blur();
-					});
-				$('#example1-1', 'body')
-					.find('a')
-						.livequery('click', example1_1);
 				
 				/*** Example 1-2 ***/
 				var matched = function() {
@@ -96,25 +65,6 @@
 		<div id="anim"></div>
 		<h1>Live Query: Unordered List Examples (Using Function References)</h1>
 		<p>A common use-case is when a new list item is added to an unordered list and an event should be bound to it or a script notified of the change.</p>
-		
-		<h2>Binding an event to each list item</h2>
-		<p>The list below uses a live query to bind a click event to each list item that changes the text to read 'Clicked'. Expiring the Live Query unbinds the events.</p>
-<pre><code>$('#example1-1', 'body')
-	.find('a')
-		.livequery('click', function() {
-			$(this)
-				.text('Clicked')
-				.blur();
-			return false;
-		});
-</code></pre>
-		<p><input type="button" name="example1-1-add" value="Add New Item"> <input type="button" name="example1-1-expire" value="Expire Live Query"> <input type="button" name="example1-1-restart" disabled="disabled" value="Restart Live Query"><p>
-		<ul id="example1-1">
-			<li><a href="#listitem">List Item</a></li>
-			<li><a href="#listitem">List Item</a></li>
-			<li><a href="#listitem">List Item</a></li>
-			<li><a href="#listitem">List Item</a></li>
-		</ul>
 		
 		<h2>Get notified when a list item is added</h2>
 		<p>The list below uses a Live Query to call a function when a new list item is added. This function adds the following text to each list item: '(Updated)' and removes it when the Live Query is expired.</p>

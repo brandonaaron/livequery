@@ -1,0 +1,2 @@
+<public:attach event="ondocumentready" onevent="$.livequery.handle.added(element)" />
+<public:attach event="ondetach" onevent="$.livequery.handle.removed(element)" />
