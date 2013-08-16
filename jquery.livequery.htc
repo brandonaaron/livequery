@@ -1,2 +1,15 @@
-<public:attach event="ondocumentready" onevent="$.livequery.handle.added(element)" />
-<public:attach event="ondetach" onevent="$.livequery.handle.removed(element)" />
+<public:component>
+<public:attach event="ondocumentready" onevent="try{$.livequery.handle.added(element)}catch(e){}" />
+<public:attach event="ondetach" onevent="try{$.livequery.handle.removed(element)}catch(e){}" />
+<public:attach event="onpropertychange" onevent="handlePropertyChange()" />
+<script>
+    function handlePropertyChange() {
+        if ( $.livequery.watchAttributes ) {
+            var attr = event.propertyName;
+            if ( $.inArray(attr, $.livequery.attributeFilter) > -1 ) {
+                $.livequery.handle.modified(element);
+            }
+        }
+    }
+</script>
+</public:component>

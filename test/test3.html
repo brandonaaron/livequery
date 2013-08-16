@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Live Query Test</title>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script src="../jquery.livequery.js"></script>
+    <script>
+      $.livequery.htcPath = '../jquery.livequery.htc';
+      $(function() {
+        $('ul').bind('click', function(event) {
+          var $li = $(event.target).closest('li');
+          $li.toggleClass('lq');
+        });
+        $('.lq').livequery(function() {
+          $(this).append('<small>&nbsp;(Matched)</small>');
+        }, function() {
+          $(this).find('small').remove();
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <ul>
+      <li>List Item</li>
+      <li>List Item</li>
+      <li>List Item</li>
+  </body>
+</html>

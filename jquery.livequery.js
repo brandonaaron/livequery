@@ -100,6 +100,8 @@
     $.extend($.livequery, {
         guid: 0,
         queries: [],
+        watchAttributes: true,
+        attributeFilter: ['class', 'className'],
         setup: false,
         timeout: null,
         method: 'none',
@@ -109,17 +111,20 @@
         prepare: {
             mutationobserver: function() {
                 var observer = new MutationObserver($.livequery.handle.mutationobserver);
-                observer.observe(document, { childList: true, subtree: true });
+                observer.observe(document, { childList: true, attributes: $.livequery.watchAttributes, subtree: true, attributeFilter: $.livequery.attributeFilter });
                 $.livequery.prepared = true;
             },
             mutationevent: function() {
                 document.addEventListener('DOMNodeInserted', $.livequery.handle.mutationevent, false);
                 document.addEventListener('DOMNodeRemoved', $.livequery.handle.mutationevent, false);
+                if ( $.livequery.watchAttributes ) {
+                    document.addEventListener('DOMAttrModified', $.livequery.handle.mutationevent, false);
+                }
                 $.livequery.prepared = true;
             },
             iebehaviors: function() {
                 if ( $.livequery.htcPath ) {
-                    $('head').append('<style>*{behavior:url('+$.livequery.htcPath+')}</style>');
+                    $('head').append('<style>body *{behavior:url('+$.livequery.htcPath+')}</style>');
                     $.livequery.prepared = true;
                 }
             }
@@ -143,17 +148,45 @@
                     }
                 });
             },
+            modified: function(target) {
+                $.each( $.livequery.queries, function(i, query) {
+                    if ( query.isMatched(target) ) {
+                        if ( !query.matches(target) ) {
+                            query.removed(target);
+                        }
+                    } else {
+                        if (query.matches(target)) {
+                            query.added(target);
+                        }
+                    }
+                });
+            },
             mutationevent: function(event) {
-                var type = event.type === 'DOMNodeInserted' ? 'added' : 'removed';
-                $.livequery.handle[type](event.target);
+                var map = {
+                        'DOMNodeInserted' : 'added',
+                        'DOMNodeRemoved'  : 'removed',
+                        'DOMAttrModified' : 'modified'
+                    },
+                    type = map[event.type];
+                if ( type === 'modified' ) {
+                    if ( $.livequery.attributeFilter.indexOf(event.attrName) > -1 ) {
+                        $.livequery.handle.modified(event.target);
+                    }
+                } else {
+                    $.livequery.handle[type](event.target);
+                }
             },
             mutationobserver: function(mutations) {
                 $.each(mutations, function(index, mutation) {
-                    $.each(['added', 'removed'], function(i, type) {
-                        $.each(mutation[type + 'Nodes'], function(i, element) {
-                            $.livequery.handle[type](element);
+                    if (mutation.type === 'attributes') {
+                        $.livequery.handle.modified(mutation.target);
+                    } else {
+                        $.each(['added', 'removed'], function(i, type) {
+                            $.each(mutation[type + 'Nodes'], function(i, element) {
+                                $.livequery.handle[type](element);
+                            });
                         });
-                    });
+                    }
                 });
             }
         },
