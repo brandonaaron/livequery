@@ -6,36 +6,40 @@ In the rewrite the event binding functionality has been removed since jQuery pro
 
 Here is an example of how to use Live Query.
 
-    $('li')
-        .livequery(function(){
-            // this = the li element just added to the DOM
-        }, function() {
-            // this = the li element just removed from the DOM or the live query was expired
+    var $mylist = $('#mylist');
+    $mylist.livequery(
+        'li', // the selector to match against
+        function(elem) { // a matched function
+            // this = elem = the li element just added to the DOM
+        }, function(elem) { // an unmatched/expire function
+            // this = elem = the li element just removed from the DOM or the live query was expired
         });
 
 ## API
 
 ### `livequery`
 
+    // selector: the selector to match against
     // matchedFn: the function to execute when a new element is added to the DOM that matches
-    $(selector).livequery( matchedFn );
+    $(...).livequery( selector, matchedFn );
 
+    // selector: the selector to match against
     // matchedFn: the function to execute when a new element is added to the DOM that matches
     // unmatchedFn: the function to execute when a previously matched element is removed from the DOM
-    $(selector).livequery( matchedFn, unmatchFn );
+    $(...).livequery( selector, matchedFn, unmatchFn );
 
 ### `expire`
 
 The first way will stop/expire all live queries associated with the selector.
 
     // Stop/expire all live queries associated with the selector
-    $(selector).expire();
+    $(...).expire( selector );
 
     // Stop/expire all live queries associated with the selector and matchedFn
-    $(selector).expire( matchedFn );
+    $(...).expire( selector, matchedFn );
 
     // Stop/expire all live queries associated with the selector, matchedFn, and unmatchedFn
-    $(selector).expire( matchedFn, unmatchFn );
+    $(...).expire( selector, matchedFn, unmatchFn );
 
 ## License
 

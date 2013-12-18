@@ -16,56 +16,57 @@
 }(function ($) {
 
     $.extend($.fn, {
-        livequery: function(matchedFn, unmatchedFn) {
-            var q = $.livequery.findorcreate(this, matchedFn, unmatchedFn);
+        livequery: function(selector, matchedFn, unmatchedFn) {
+            var q = $.livequery.findorcreate(this, selector, matchedFn, unmatchedFn);
             q.run();
             return this;
         },
-        expire: function(matchedFn, unmatchedFn) {
-            var q = $.livequery.find(this, matchedFn, unmatchedFn);
+        expire: function(selector, matchedFn, unmatchedFn) {
+            var q = $.livequery.find(this, selector, matchedFn, unmatchedFn);
             if (q) { q.stop(); }
             return this;
         }
     });
 
 
-    $.livequery = function(selector, context, matchedFn, unmatchedFn) {
+    $.livequery = function(jq, selector, matchedFn, unmatchedFn) {
         this.selector    = selector;
-        this.context     = context;
+        this.jq          = jq;
+        this.context     = jq.context;
         this.matchedFn   = matchedFn;
         this.unmatchedFn = unmatchedFn;
         this.stopped     = false;
         this.id          = $.livequery.queries.push(this)-1;
 
         matchedFn.$lqguid = matchedFn.$lqguid || $.livequery.guid++;
-        if (unmatchedFn) unmatchedFn.$lqguid = unmatchedFn.$lqguid || $.livequery.guid++;
+        if (unmatchedFn) { unmatchedFn.$lqguid = unmatchedFn.$lqguid || $.livequery.guid++; }
     };
     $.livequery.prototype = {
         run: function() {
             this.stopped = false;
-            $(this.selector, this.context).each($.proxy(function(i, element) {
+            this.jq.find(this.selector).each($.proxy(function(i, element) {
                 this.added(element);
             }, this));
         },
         stop: function() {
-            $(this.selector, this.context).each($.proxy(function(i, element) {
+            this.jq.find(this.selector).each($.proxy(function(i, element) {
                 this.removed(element);
             }, this));
             this.stopped = true;
         },
         matches: function(element) {
-            return !this.isStopped() && $(element, this.context).is(this.selector);
+            return !this.isStopped() && $(element, this.context).is(this.selector) && this.jq.has(element).length;
         },
         added: function(element) {
             if ( !this.isStopped() && !this.isMatched(element) ) {
                 this.markAsMatched(element);
-                this.matchedFn.call(element);
+                this.matchedFn.call(element, element);
             }
         },
         removed: function(element) {
             if ( !this.isStopped() && this.isMatched(element) ) {
                 this.removeMatchedMark(element);
-                if (this.unmatchedFn) this.unmatchedFn.call(element);
+                if (this.unmatchedFn) { this.unmatchedFn.call(element, element); }
             }
         },
         getLQArray: function(element) {
@@ -190,19 +191,20 @@
                 });
             }
         },
-        find: function(jq, matchedFn, unmatchedFn) {
+        find: function(jq, selector, matchedFn, unmatchedFn) {
             var q;
             $.each( $.livequery.queries, function(i, query) {
-                if ( jq.selector == query.selector && jq.context == query.context &&
-                    (!matchedFn || matchedFn.$lqguid == query.matchedFn.$lqguid) &&
-                    (!unmatchedFn || unmatchedFn.$lqguid == query.unmatchedFn.$lqguid) )
-                        return (q = query) && false;
+                if ( selector === query.selector && jq === query.jq &&
+                        (!matchedFn || matchedFn.$lqguid === query.matchedFn.$lqguid) &&
+                        (!unmatchedFn || unmatchedFn.$lqguid === query.unmatchedFn.$lqguid) ) {
+                    return (q = query) && false;
+                }
             });
             return q;
         },
-        findorcreate: function(jq, matchedFn, unmatchedFn) {
-            return $.livequery.find(jq, matchedFn, unmatchedFn) ||
-                new $.livequery(jq.selector, jq.context, matchedFn, unmatchedFn);
+        findorcreate: function(jq, selector, matchedFn, unmatchedFn) {
+            return $.livequery.find(jq, selector, matchedFn, unmatchedFn) ||
+                new $.livequery(jq, selector, matchedFn, unmatchedFn);
         }
     });
 
