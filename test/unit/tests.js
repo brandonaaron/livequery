@@ -14,6 +14,7 @@ test("Fires for existing matched elements", 4, function() {
     ok( $(elem).is('li'), 'It is an li element' );
     ok( $(elem).closest('.container').length === 1, 'It does belong to the .container div' );
     if (--count === 0) {
+      this.$target.expire('li');
       start();
     }
   }, this));
@@ -25,6 +26,7 @@ test("Fires for newly added matched elements (via jQuery)", 1, function() {
   this.$target.livequery('li', $.proxy(function(elem) {
     if (elem.id === "newli") {
       ok( $(elem).is('li'), 'It is an li element' );
+      this.$target.expire('li');
       start();
     }
   }, this));
@@ -37,7 +39,7 @@ test("Scope and first argument are the element", 2, function() {
   this.$target.livequery('li', function(elem) {
     ok($(this).is('li'), 'Scope is the matched li element');
     equal(this, elem, 'Scope and element are the same');
-    start();
     _this.$target.expire('li');
+    start();
   })
 });
