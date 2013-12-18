@@ -1,5 +1,11 @@
 # Live Query ChangeLog
 
+## 2.0.0
+
+* Rewritten to use mutation observers, with a fallback to mutation events, with a fallback to behaviors for IE < 9
+* No longer handles event binding, use `.on('event', 'selector'...` for event delegation
+* No longer dual licensed, licensed under the MIT License (LICENSE.txt) only now
+
 ## 1.1.1
 
 * Compatibility fix with 1.4.1 (thanks)

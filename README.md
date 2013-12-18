@@ -2,7 +2,7 @@
 
 Live Query has been rewritten in version 2 to utilize DOM Mutation Observers or fallback to DOM Mutation Events. This covers a nice range of modern browsers and IE9 up. If you need to support less than IE9 then it will fallback to using behaviors to be notified of added and removed elements. This requires setting the `$.livequery.htcPath` so that it can load the included behavior file.
 
-In the rewrite the event binding functionality has been removed as you should be using some form of event delegation for that now. It now only supports passing in a matched and an optional unmatched function handler. These handlers are fired only when elements are added or removed from the DOM. This is slightly different from the original Live Query in that it would also monitor for slightly smaller changes that might make an element no longer match, such as a class name change.
+In the rewrite the event binding functionality has been removed since jQuery provides really nice event delegation. It now only supports passing in a matched and an optional unmatched function handler. These handlers are fired only when elements are added or removed from the DOM. This is slightly different from the original Live Query in that it would also monitor for slightly smaller changes that might make an element no longer match, such as a class name change.
 
 Here is an example of how to use Live Query.
 
