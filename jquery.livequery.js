@@ -1,4 +1,4 @@
-/*! Copyright (c) 2013 Brandon Aaron (http://brandonaaron.net)
+/*! Copyright (c) 2014 Brandon Aaron (http://brandonaaron.net)
  * Licensed under the MIT License (LICENSE.txt)
  */
 
@@ -99,6 +99,7 @@
     };
 
     $.extend($.livequery, {
+        version: '2.0.0-pre',
         guid: 0,
         queries: [],
         watchAttributes: true,

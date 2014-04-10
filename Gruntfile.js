@@ -6,7 +6,7 @@ module.exports = function(grunt) {
             options: {
                 jshintrc: '.jshintrc'
             },
-            all: ['*.js']
+            all: ['jquery.livequery.js']
         },
         uglify: {
             options: {
@@ -17,7 +17,7 @@ module.exports = function(grunt) {
             },
             build: {
                 src: 'jquery.livequery.js',
-                dest: 'build/jquery.livequery.min.js'
+                dest: 'jquery.livequery.min.js'
             }
         },
         connect: {

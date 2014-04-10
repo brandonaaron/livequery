@@ -1,6 +1,6 @@
 # Live Query ChangeLog
 
-## 2.0.0
+## 2.0.0-pre
 
 * Rewritten to use mutation observers, with a fallback to mutation events, with a fallback to behaviors for IE < 9
 * Now takes in the selector as an argument instead of trying to infer it from the jQuery object
